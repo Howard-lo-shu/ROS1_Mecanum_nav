@@ -19,6 +19,10 @@ https://wiki.ros.org/imu_filter_madgwick
 機器人座標轉換使用卡爾曼濾波器結合視覺里程、IMU與傳統輪式里程計的數據當作機器人導航里程計使用，定位方式使用AMCL作為機器人導航定位，最後全局路徑規劃器與區域路徑規劃器使用Voronoi_Planner與TEB Local_Planner。機器人所搭載的三顆鏡頭分別安裝於機體左側、右側與後方。
 <img width="1468" height="693" alt="總架構" src="https://github.com/user-attachments/assets/d1df0a53-16ac-455a-8dd3-e54979b181a9" />
 
+慣性測量單元（Inertial Measurement Unit, IMU）資訊是由Orbbec所開法的Gemini2深度相機中的，線性加速度/camera/accel/sample與角加速度/camera/gyro/sample進行處裡後所發不出來。使用imu_filter_madgwick，從原始 IMU 資料中估算裝置的空間方向（姿態）。該濾波器透過加速度計與陀螺儀的資料進行姿態推算，並可選擇性地加入磁力計資料以提升航向（Yaw）角的準確性。該演算法以四元數（quaternion）格式輸出姿態，具有計算效率高、延遲低、適合即時應用等優點。通過imu_filter_madgwick將會把估測出的姿態給EKF做數據融合處理。
+<img width="973" height="644" alt="imu" src="https://github.com/user-attachments/assets/2bb08c10-a7a3-4e79-880e-cea5a598dd3e" />
+視覺里程計（Visual Odometry）Orbbec所開法的Gemini2深度相機透過 RGB-D 相機所擷取之彩色影像與對應深度資訊，可直接從影像中取得空間座標，進而增強特徵匹配的精度與穩定性，相較於僅依賴灰階影像之傳統單目 VO，能提供更準確且穩定的位姿估計結果。視覺里程計模組為 RTAB-Map 套件中提供之 rtabmap_odom，該模組利用 RGB-D 影像進行特徵點提取與匹配，並即時估算相機的相對六自由度（6-DOF）運動。rtabmap_odom 首先從 RGB 影像中提取具辨識度的特徵點，接著利用深度影像提供的深度資訊將這些二維特徵點轉換至三維空間座標，建立三維特徵點雲。
+
 # 執行結果
 https://github.com/user-attachments/assets/030374f3-ce4b-4fe6-a2bd-173ca7b2b5e5
 
