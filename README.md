@@ -4,3 +4,9 @@
 https://wiki.ros.org/ar_track_alvar
 ###### TEB Local Planner
 https://wiki.ros.org/teb_local_planner
+###### 進佔導引參考資料
+https://github.com/ROBOTIS-GIT/turtlebot3_applications
+###### robot_localization
+https://docs.ros.org/en/melodic/api/robot_localization/html/index.html
+###### IMU Filter
+https://wiki.ros.org/imu_filter_madgwick
