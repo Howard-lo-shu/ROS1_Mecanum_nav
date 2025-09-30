@@ -1,0 +1,50 @@
+local_costmap:
+  # obstacle_range: 4.0
+  # raytrace_range: 4.5
+  # footprint: [[0.521, 0.305], [0.521, -0.305], [-0.521, -0.305], [-0.521, 0.305]] # AMR150M
+  # footprint_padding: 0.01
+  transform_tolerance: 0.5
+  update_frequency: 10.0
+  publish_frequency: 10.0
+
+  global_frame: map
+  robot_base_frame: base_link
+  resolution: 0.05
+  static_map: false
+  rolling_window: true
+  width: 10.0
+  height: 10.0
+
+  # map_type: costmap
+
+  plugins:
+    - { name: StaticMap_layer, type: "costmap_2d::StaticLayer" }
+    - { name: Obstacles_layer, type: "costmap_2d::ObstacleLayer" }
+    - { name: Realsense_layer, type: "costmap_2d::ObstacleLayer" }
+    - { name: Inflation_layer, type: "costmap_2d::InflationLayer" }
+
+  Obstacles_layer:
+    enabled: true
+    # max_obstacle_height: 0.35
+    # min_obstacle_height: 0.30
+    observation_sources: lidars
+    lidars:
+      sensor_frame: base_link
+      data_type: LaserScan
+      topic: /scan_pointcloud
+      marking: true
+      clearing: true
+
+  Realsense_layer:
+    enabled: true
+    observation_sources: lane_markings
+    lane_markings:
+      sensor_frame: base_link
+      data_type: PointCloud2
+      topic: /pointcloud_topic
+      marking: true
+      clearing: true
+
+  Inflation_layer:
+    inflation_radius: 1.0
+    cost_scaling_factor: 2.2 # 2.5 # 3.1

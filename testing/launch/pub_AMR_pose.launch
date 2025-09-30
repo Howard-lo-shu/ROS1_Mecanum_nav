@@ -1,0 +1,5 @@
+<launch>
+  <!--node pkg="testing" type="goal_Matlab.py" name="gload"  output="screen"/-->
+  <!--node pkg="testing" type="Correction.py" name="Correction"  output="screen"/-->
+  <node pkg="testing" type="AMR_base_link_pose.py" name="AMR_base_link_pose"  output="screen"/>
+</launch>

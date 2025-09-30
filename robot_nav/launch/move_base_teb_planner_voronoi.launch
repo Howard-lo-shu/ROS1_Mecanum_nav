@@ -1,0 +1,26 @@
+<launch>
+  <!-- Arguments -->
+  <arg name="cmd_vel_topic" default="/nav_vel" />
+  <arg name="odom_topic" default="/odom_ekf" />
+  <arg name="move_forward_only" default="false"/>
+  <arg name="no_static_map" default="false"/>
+
+  <!-- move_base -->
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+    <param name="base_global_planner" value="voronoi_planner/VoronoiPlanner" />
+    <param name="base_local_planner" value="teb_local_planner/TebLocalPlannerROS" />
+    <rosparam file="$(find robot_nav)/param/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find robot_nav)/param/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find robot_nav)/param/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find robot_nav)/param/global_costmap_params.yaml" command="load" />
+    <rosparam file="$(find robot_nav)/param/move_base_params.yaml" command="load" />
+    <param name="global_costmap/width" value="100.0" if="$(arg no_static_map)"/>
+    <param name="global_costmap/height" value="100.0" if="$(arg no_static_map)"/>
+
+    <rosparam file="$(find robot_nav)/param/teb_local_planner.yaml" command="load" />
+    <remap from="cmd_vel" to="$(arg cmd_vel_topic)"/>
+    <remap from="odom" to="$(arg odom_topic)"/>
+
+  </node>
+  
+</launch>

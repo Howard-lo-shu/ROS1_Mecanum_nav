@@ -1,0 +1,69 @@
+<launch> 
+
+    <arg  name = "open_rviz"  default = "true" /> 
+    <arg  name = "marker_size"  default = "8.0" /> 
+    <arg  name = "max_new_marker_error"  default = "0.08" /> 
+    <arg  name = "max_track_error"  default = "0.2" /> 
+
+
+    <!--arg  name = "cam_image_topic"  default = "/camera_front/camera/color/image_raw" /> 
+    <arg  name = "cam_info_topic"  default = "/camera_front/camera/color/camera_info" /--> 
+
+    <arg  name = "cam_image_topic_b"  default = "/camera_back/camera/color/image_raw" /> 
+    <arg  name = "cam_info_topic_b"  default = "/camera_back/camera/color/camera_info" /> 
+
+    <arg  name = "cam_image_topic_l"  default = "/camera_left/camera/color/image_raw" /> 
+    <arg  name = "cam_info_topic_l"  default = "/camera_left/camera/color/camera_info" /> 
+
+    <arg  name = "cam_image_topic_r"  default = "/camera_right/camera/color/image_raw" /> 
+    <arg  name = "cam_info_topic_r"  default = "/camera_right/camera/color/camera_info" /> 
+
+    <arg  name = "output_frame"  default = "/base_link" /> 
+
+    <!--node name = "ar_track_alvar_camera_front"  pkg = "ar_track_alvar"  type = "individualMarkersNoKinect"  respawn = "false"  output = "screen" > 
+        <param  name = "marker_size"  type = "double"  value = "$(arg marker_size)" /> 
+        <param  name = "max_new_marker_error"  type = "double"  value = "$(arg max_new_marker_error)" /> 
+        <param  name = "max_track_error"  type = "double"  value = "$(arg max_track_error)" /> 
+        <param  name = "output_frame"  type = "string"  value = "$(arg output_frame)" /> 
+        <remap  from = "camera_image"  to = "$(arg cam_image_topic)" /> 
+        <remap  from = "camera_info"  to = "$(arg cam_info_topic)" /> 
+        <remap from="/ar_pose_marker" to="camera_front_ar_pose_marker"/>
+    </node --> 
+
+    <node name = "ar_track_alvar_camera_back"  pkg = "ar_track_alvar"  type = "individualMarkersNoKinect"  respawn = "false"  output = "screen" > 
+        <param  name = "marker_size"  type = "double"  value = "$(arg marker_size)" /> 
+        <param  name = "max_new_marker_error"  type = "double"  value = "$(arg max_new_marker_error)" /> 
+        <param  name = "max_track_error"  type = "double"  value = "$(arg max_track_error)" /> 
+        <param  name = "output_frame"  type = "string"  value = "$(arg output_frame)" /> 
+        <remap  from = "camera_image"  to = "$(arg cam_image_topic_b)" /> 
+        <remap  from = "camera_info"  to = "$(arg cam_info_topic_b)" /> 
+        <remap from="/ar_pose_marker" to="camera_back_ar_pose_marker"/>
+    </node> 
+    
+    <node name = "ar_track_alvar_camera_left"  pkg = "ar_track_alvar"  type = "individualMarkersNoKinect"  respawn = "false"  output = "screen" > 
+        <param  name = "marker_size"  type = "double"  value = "$(arg marker_size)" /> 
+        <param  name = "max_new_marker_error"  type = "double"  value = "$(arg max_new_marker_error)" /> 
+        <param  name = "max_track_error"  type = "double"  value = "$(arg max_track_error)" /> 
+        <param  name = "output_frame"  type = "string"  value = "$(arg output_frame)" /> 
+        <remap  from = "camera_image"  to = "$(arg cam_image_topic_l)" /> 
+        <remap  from = "camera_info"  to = "$(arg cam_info_topic_l)" /> 
+        <remap from="/ar_pose_marker" to="camera_left_ar_pose_marker"/>
+    </node > 
+    
+    <node name = "ar_track_alvar_camera_right"  pkg = "ar_track_alvar"  type = "individualMarkersNoKinect"  respawn = "false"  output = "screen" > 
+        <param  name = "marker_size"  type = "double"  value = "$(arg marker_size)" /> 
+        <param  name = "max_new_marker_error"  type = "double"  value = "$(arg max_new_marker_error)" /> 
+        <param  name = "max_track_error"  type = "double"  value = "$(arg max_track_error)" /> 
+        <param  name = "output_frame"  type = "string"  value = "$(arg output_frame)" /> 
+        <remap  from = "camera_image"  to = "$(arg cam_image_topic_r)" /> 
+        <remap  from = "camera_info"  to = "$(arg cam_info_topic_r)" /> 
+        <remap from="/ar_pose_marker" to="camera_right_ar_pose_marker"/>
+    </node > 
+    
+ 
+    <!--node pkg="robot_nav" type="correction.py" name="found"  output="screen"/-->
+    <node pkg="robot_nav" type="correction_b.py" name="back"  output="screen"/>
+    <node pkg="robot_nav" type="correction_l.py" name="left"  output="screen"/>
+    <node pkg="robot_nav" type="correction_r.py" name="right"  output="screen"/>
+    
+</launch> 

@@ -1,0 +1,40 @@
+obstacle_range: 4.0
+raytrace_range: 4.5
+footprint:  [[0.521, 0.305], [0.521, -0.305], [-0.521, -0.305], [-0.521, 0.305]]
+robot_radius: 0.4
+#always_send_full_costmap: true
+#inflation_radius: 0.05
+#static_layer:
+  #enabled: true
+  #map_topic: "/map"
+  
+inflation_layer:
+  inflation_radius: 0.5
+  cost_scaling_factor: 15.0
+#cost_scaling_factor: 10
+map_type: costmap
+#transform_tolerance: 0.3
+transform_tolerance: 1.0
+
+obstacle_layer:
+    observation_sources: laser_scan_sensor
+    laser_scan_sensor: {
+      data_type: LaserScan,
+      topic: /scan_pointcloud,
+      marking: true,
+      clearing: true,
+      obstacle_range: 4.0,
+      raytrace_range: 20.0
+    }
+
+observation_sources: scan
+scan: {data_type: LaserScan, topic: /scan_pointcloud, marking: true, clearing: true, inf_is_valid: true }
+
+obstacles:
+  observation_sources: scan
+  scan: {sensor_frame: lidars_link, data_type: LaserScan, topic: /scan_pointcloud, marking: true, clearing: true}
+  
+
+
+
+  

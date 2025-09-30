@@ -1,0 +1,30 @@
+<launch>
+  <!-- Arguments -->
+  <arg name="map_file" default="$(find robot_nav)/maps/B1_sen_map.yaml"/>
+  <arg name="open_rviz" default="true"/>
+  <arg name="move_forward_only" default="false"/>
+  <node pkg="testing" type="AMR_base_link_pose.py" name="AMR_base_link_pose"  output="screen"/>
+
+  <!-- Map server -->
+  <node pkg="map_server" name="map_server" type="map_server" args="$(arg map_file)"/>
+
+  <!-- AMCL -->
+  <include file="$(find robot_nav)/launch/amcl.launch"/>
+
+  <!-- move_base -->
+  <include file="$(find robot_nav)/launch/move_base_teb_planner_voronoi.launch">
+    <arg name="move_forward_only" value="$(arg move_forward_only)"/>
+  </include>
+  
+  <node pkg="robot_localization" type="ekf_localization_node" name="ekf_se" clear_params="true">
+    <rosparam command="load" file="$(find robot_nav)/param/ekf_params_imu.yaml"/>
+    <remap from="odometry/filtered" to="odom_ekf"/>
+  </node>
+  <!--node pkg="robot_nav" type="nav_finish.py" name="finish_rst"  output="screen"/-->
+
+  <!-- rviz -->
+  <group if="$(arg open_rviz)"> 
+    <node pkg="rviz" type="rviz" name="rviz" required="true"
+          args="-d $(find robot_nav)/rviz/four_ws_amr_navigation.rviz"/>
+  </group>
+</launch>

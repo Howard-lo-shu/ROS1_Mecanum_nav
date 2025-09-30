@@ -1,0 +1,26 @@
+obstacle_range: 4.0
+raytrace_range: 4.5
+footprint: [[0.521, 0.305], [0.521, -0.305], [-0.521, -0.305], [-0.521, 0.305]] # AMR150M
+footprint_padding: 0.0
+# Obstacles_layer:
+#   enabled: true
+#   max_obstacle_height: 0.35
+#   min_obstacle_height: 0.30
+#   observation_sources: hokuyo_lidars
+#   hokuyo_lidars:
+#     sensor_frame: base_link
+#     data_type: LaserScan
+#     topic: /scan_pointcloud
+#     marking: true
+#     clearing: true
+
+# inflation_layer:
+#   enabled: true
+#   inflation_radius: 0.6825
+#   cost_scaling_factor: 10
+
+# plugins:
+#   - { name: StaticMap_layer, type: "costmap_2d::StaticLayer" }
+#   - { name: VirtualWall_layer, type: "simple_layer_namespace::SimpleLayer" }
+#   #- { name: Obstacles_layer, type: "costmap_2d::ObstacleLayer" }
+#   - { name: Inflation_layer, type: "costmap_2d::InflationLayer" }

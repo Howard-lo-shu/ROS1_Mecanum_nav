@@ -1,0 +1,13 @@
+<launch>
+<include file="$(find testing)/launch/rtabmap1.launch"/>
+<node pkg="robot_nav" type="camera_imu_pub.py" name="IMU"  output="screen"/>
+    <node pkg="imu_filter_madgwick" type="imu_filter_node" name="ImuFilter">
+        <param name="use_mag" type="bool" value="false" />
+        <param name="publish_tf" type="bool" value="false" />
+        
+        <remap from="/imu/data_raw" to="/camera/imu"/>
+        <remap from="/imu/data" to="/imu/data_raw"/>
+    </node>
+   
+    
+</launch>
