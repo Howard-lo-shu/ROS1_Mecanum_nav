@@ -1,0 +1,16 @@
+<launch>
+    <arg name="open_rviz" default="true"/>
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+
+    <node name="cartographer_node" pkg="cartographer_ros" type="cartographer_node" args="
+          -configuration_directory
+              $(find cimc_agv_slam)/config
+          -configuration_basename revo_lds.lua" output="screen">
+    </node>
+    <node name="cartographer_occupancy_grid_node" pkg="cartographer_ros" type="cartographer_occupancy_grid_node" args="-resolution 0.05" />
+    <group if="$(arg open_rviz)"> 
+    <node pkg="rviz" type="rviz" name="rviz" required="true"
+          args="-d $(find cimc_agv_slam)/rviz/cartographer.rviz"/>
+  </group>
+    
+</launch>
