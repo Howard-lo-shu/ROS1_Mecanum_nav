@@ -19,3 +19,53 @@ https://wiki.ros.org/imu_filter_madgwick
 機器人座標轉換使用卡爾曼濾波器結合視覺里程、IMU與傳統輪式里程計的數據當作機器人導航里程計使用，定位方式使用AMCL作為機器人導航定位，最後全局路徑規劃器與區域路徑規劃器使用Voronoi_Planner與TEB Local_Planner。機器人所搭載的三顆鏡頭分別安裝於機體左側、右側與後方。
 <img width="1468" height="693" alt="總架構" src="https://github.com/user-attachments/assets/d1df0a53-16ac-455a-8dd3-e54979b181a9" />
 
+# 執行結果
+https://github.com/user-attachments/assets/030374f3-ce4b-4fe6-a2bd-173ca7b2b5e5
+
+# Launch command
+###### 詳細的指令請參閱ROS launch 指令集，此處僅列出基本使用指令
+### Mechatronics system (sencor + odom +tf )
+本系統的底盤資料為友達光電所開法MCU Drive，所以沒有提供 robot_mcu 的 Pkg 資料。
+```
+# Only using Chassis
+roslaunch robot_mcu robot_odom.launch
+
+# Only using Lidars
+roslaunch robot_mcu scan.launch
+
+# Using Chassis and Sencors
+roslaunch robot_mcu robot_odom_laser.launch 
+```
+### Sensor fusion
+```
+# After starting the robot chassis, open a new terminal
+source /opt/ros/noetic/setup.bash
+source ~/<Your workspace>/devel/setup.bash –extend
+
+# Start sensor fusion command
+roslaunch robot_nav imu_filter.launch
+```
+### Mapping
+```
+# After starting the robot chassis, open a new terminal
+source /opt/ros/noetic/setup.bash
+source ~/<Your workspace>/devel/setup.bash –extend
+
+# Gmapping
+roslaunch cimc_agv_slam cimc_agv_gmapping.launch
+
+# Save map
+rosrun map_server map_saver -f <Your map name>
+```
+### Navigation
+```
+# After starting the robot chassis, open a new terminal
+source /opt/ros/noetic/setup.bash
+source ~/<Your workspace>/devel/setup.bash –extend
+
+# Navigation using Sensor fusion odom_ekf
+roslaunch robot_nav navigation_teb_voronoi.launch
+
+# Navigation using robor Chassis odom
+roslaunch robot_nav navigation_teb.launch
+```
